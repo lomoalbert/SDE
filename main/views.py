@@ -130,6 +130,7 @@ def questionnaire(request):
         newquestion.score=element_A+element_B+element_C+element_D+element_E+element_F+element_G
         newquestion.time_submit=datetime.datetime.utcnow()
         newquestion.save()
+        well=newquestion.score<=7
         return render_to_response('questionscore.html',locals())
 
 
@@ -184,16 +185,15 @@ def personbyadno(request,adno):
         return HttpResponse(json.dumps(jsondict))
 
 @login_required
-def manage(request,adno=None):
-    if not adno:
+def manage(request,username=None):
+    if not username and not request.user.is_superuser:
+        persons=[Person.objects.get(username=request.user.username),]
+    elif not username and request.user.is_superuser:
         persons=Person.objects.all()
-        return render_to_response('manage.html',locals())
-    else:
-        personlist=Person.objects.filter(adno=adno)
-        if personlist:
-            person=Person.objects.get(adno=adno)
-            questions=Question.objects.filter(person=person)
-            return render_to_response('manage.html',locals())
-        else:
-            persons=Person.objects.all()
-            return render_to_response('manage.html',locals())
+    elif username and not request.user.is_superuser:
+        person=Person.objects.get(username=request.user.username)
+        questions=Question.objects.filter(person=person)
+    elif username and request.user.is_superuser:
+        person=Person.objects.get(username=username)
+        questions=Question.objects.filter(person=person)
+    return render_to_response('manage.html',locals())

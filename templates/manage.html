@@ -24,7 +24,7 @@
                             {% for person in persons %}
                                 <tr >
                                     <th scope="row">{{ forloop.counter }}</th>
-                                    <td><a href="./{{ person.adno }}/"> {{ person.name }} </a></td>
+                                    <td><a href="/manage/{{ person.username }}/"> {{ person.name }} </a></td>
                                     <td>{{ person.sex }}</td>
                                     <td>{{ person.age }}</td>
                                     <td>{{ person.adno }}</td>
@@ -51,8 +51,8 @@
                             <tr>
                                 <th>#</th>
                                 <th>姓名</th>
-                                <th>住院号</th>
                                 <th>PSQI</th>
+                                <th>提交时间</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -60,8 +60,8 @@
                                 <tr >
                                     <th scope="row">{{ forloop.counter }}</th>
                                     <td> {{ person.name }} </td>
-                                    <td>{{ person.adno }}</td>
                                     <td>{{ question.score }}</td>
+                                    <td>{{ question.time_submit }}</td>
                                 </tr>
                             {% endfor %}
                             </tbody>
