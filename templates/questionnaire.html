@@ -1,0 +1,610 @@
+{% extends "base.html" %}
+{% block title %}睡眠质量调查{% endblock %}
+
+{% block javascript %}
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+            $("#adno").change(function () {
+                $.get("/adno/" + $("#adno").val(), function (data, status) {
+                    jdata = JSON.parse(data);
+                    $("#name").val(jdata.name);
+                    $("#sex").val(jdata.sex);
+                    $("#age").val(jdata.age);
+                    $("#dishis").val(jdata.dishis);
+                    $("#home").val(jdata.home);
+                });
+            });
+        });
+    </script>
+{% endblock %}
+
+
+
+{% block content %}
+    <div class="container">
+        <div class="row text-center">
+            <div class="col-xs-12">
+                <h4>匹兹堡睡眠质量指数量表(PSQI)</h4>
+                <pre class="help-block text-left">亲爱的同学：
+    您好！本次调查仅作统计分析之用，所以不要有任何的顾虑。答案无对错好坏之分，请根据指导语如实填写即可，不要与他人商量核对。谢谢您的合作与支持！
+指导语：下面一些问题是关于您最近一个月的睡眠状况，请填写或选择出最符合您实际情况的答案。</pre>
+                <form class="text-left" action="/questionnaire/" method="post">
+
+                    {% csrf_token %}
+                    <div class="alert alert-info">
+                        <label>个人信息</label>
+
+                        <div class="form-group ">
+                            <div class="input-group col-md-6">
+                                <span class="input-group-addon">住院号</span>
+                                <input type="text" class="form-control" name="adno" value="{{ person.adno }}">
+                            </div>
+                            <div class="input-group col-md-6 ">
+                                <div class="input-group-addon">姓名</div>
+                                <input type="text" class="form-control" name="name" value="{{ person.name }}">
+                            </div>
+                            <div class="input-group col-md-6">
+                                <span class="input-group-addon">性别</span>
+                                <select class="form-control" name="sex">
+                                    <option {% ifequal person.sex "男" %} selected="selected" {% endifequal %}>男</option>
+                                    <option {% ifequal person.sex "女" %} selected="selected" {% endifequal %}>女</option>
+                                </select>
+                            </div>
+                            <div class="input-group col-md-6">
+                                <span class="input-group-addon">年龄</span>
+                                <input type="number" class="form-control" name="age" value="{{ person.age }}">
+                            </div>
+                            <div class="input-group col-md-6">
+                                <span class="input-group-addon">住址</span>
+                                <select class="form-control" name="home">
+                                    <option {% ifequal person.home "农村" %} selected="selected" {% endifequal %}>农村
+                                    </option>
+                                    <option {% ifequal person.home "城镇" %} selected="selected" {% endifequal %}>城镇
+                                    </option>
+                                    <option {% ifequal person.home "城市" %} selected="selected" {% endifequal %}>城市
+                                    </option>
+                                </select>
+                            </div>
+                            <div class="input-group col-md-6 ">
+                                <div class="input-group-addon">职业</div>
+                                <input type="text" class="form-control" id="name" name="profession"
+                                       value="{{ personinfo.adno }}">
+                            </div>
+                            <div class="input-group col-md-6 ">
+                                <div class="input-group-addon">文化程度</div>
+                                <input type="text" class="form-control" id="name" name="education"
+                                       value="{{ personinfo.education }}">
+                            </div>
+                            <div class="input-group col-md-6 ">
+                                <div class="input-group-addon">既往病史</div>
+                                <input type="text" class="form-control" id="name" name="disease_history"
+                                       value="{{ personinfo.disease_history }}">
+                            </div>
+                            <div class="input-group col-md-6 ">
+                                <div class="input-group-addon">既往病史病龄</div>
+                                <input type="text" class="form-control" id="name" name="disease_age_h"
+                                       value="{{ personinfo.disease_age_h }}">
+                            </div>
+                            <div class="input-group col-md-6 ">
+                                <div class="input-group-addon">现病史</div>
+                                <input type="text" class="form-control" id="name" name="disease_current"
+                                       value="{{ personinfo.disease_current }}">
+                            </div>
+                            <div class="input-group col-md-6 ">
+                                <div class="input-group-addon">现病史病龄</div>
+                                <input type="text" class="form-control" id="name" name="disease_age_c"
+                                       value="{{ personinfo.disease_age_c }}">
+                            </div>
+                            <div class="input-group col-md-6 ">
+                                <div class="input-group-addon">既往用药</div>
+                                <input type="text" class="form-control" id="name" name="used_drugs"
+                                       value="{{ personinfo.used_drugs }}">
+                            </div>
+                            <div class="input-group col-md-6 ">
+                                <div class="input-group-addon">现用药物</div>
+                                <input type="text" class="form-control" id="name" name="using_drugs"
+                                       value="{{ personinfo.using_drugs }}">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="panel panel-default">
+                        <div class="panel-heading">1.近1个月，晚上上床睡觉时间通常是_点钟。</div>
+                        <div class="panel-body">
+                            <div class="form-group">
+                                <select class="form-control" name="q1">
+                                    <option>1</option>
+                                    <option>2</option>
+                                    <option>3</option>
+                                    <option>4</option>
+                                    <option>5</option>
+                                    <option>6</option>
+                                    <option>7</option>
+                                    <option>8</option>
+                                    <option>9</option>
+                                    <option>10</option>
+                                    <option>11</option>
+                                    <option>12</option>
+                                    <option>13</option>
+                                    <option>14</option>
+                                    <option>15</option>
+                                    <option>16</option>
+                                    <option>17</option>
+                                    <option>18</option>
+                                    <option>19</option>
+                                    <option>20</option>
+                                    <option>21</option>
+                                    <option>22</option>
+                                    <option selected="selected">23</option>
+                                    <option>24</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="panel panel-default">
+                        <div class="panel-heading">2.近1个月，从上床到入睡通常需要_分钟。</div>
+                        <div class="panel-body">
+                            <div class="form-group">
+                                <input type="number" class="form-control" name="q2">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="panel panel-default">
+                        <div class="panel-heading">3.近1个月，通常早上_点起床。</div>
+                        <div class="panel-body">
+                            <div class="form-group">
+                                <select class="form-control" name="q3">
+                                    <option>1</option>
+                                    <option>2</option>
+                                    <option>3</option>
+                                    <option>4</option>
+                                    <option>5</option>
+                                    <option>6</option>
+                                    <option selected="selected">7</option>
+                                    <option>8</option>
+                                    <option>9</option>
+                                    <option>10</option>
+                                    <option>11</option>
+                                    <option>12</option>
+                                    <option>13</option>
+                                    <option>14</option>
+                                    <option>15</option>
+                                    <option>16</option>
+                                    <option>17</option>
+                                    <option>18</option>
+                                    <option>19</option>
+                                    <option>20</option>
+                                    <option>21</option>
+                                    <option>22</option>
+                                    <option>23</option>
+                                    <option>24</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="panel panel-default">
+                        <div class="panel-heading">4.近1个月，每夜通常实际睡眠时间_小时。</div>
+                        <div class="panel-body">
+                            <div class="form-group">
+                                <select class="form-control" name="q4">
+                                    <option>1</option>
+                                    <option>2</option>
+                                    <option>3</option>
+                                    <option>4</option>
+                                    <option>5</option>
+                                    <option>6</option>
+                                    <option>7</option>
+                                    <option selected="selected">8</option>
+                                    <option>9</option>
+                                    <option>10</option>
+                                    <option>11</option>
+                                    <option>12</option>
+                                    <option>13</option>
+                                    <option>14</option>
+                                    <option>15</option>
+                                    <option>16</option>
+                                    <option>17</option>
+                                    <option>18</option>
+                                    <option>19</option>
+                                    <option>20</option>
+                                    <option>21</option>
+                                    <option>22</option>
+                                    <option>23</option>
+                                    <option>24</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="panel panel-default">
+                        <div class="panel-heading">5.近一个月，您有没有因下列情况影响睡眠而烦恼.</div>
+
+                        <div class="panel-body">
+                            <label>a. 入睡困难(30分钟内不能入睡)</label>
+                            <br/>
+
+                            <div class="radio">
+                                <label class="col-md-3">
+                                    <input type="radio" name="a" value="0">无
+                                </label>
+                            </div>
+                            <div class="radio">
+                                <label class="col-md-3">
+                                    <input type="radio" name="a" value="1"><1次/周
+                                </label>
+                            </div>
+                            <div class="radio">
+                                <label class="col-md-3">
+                                    <input type="radio" name="a" value="2">1~2次/周
+                                </label>
+                            </div>
+                            <div class="radio">
+                                <label class="col-md-3">
+                                    <input type="radio" name="a" value="3">≧3次/周
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="panel-body">
+                            <label>b.夜间易醒或早醒</label>
+                            <br/>
+
+                            <div class="radio">
+                                <label class="col-md-3">
+                                    <input type="radio" name="b" value="0">无
+                                </label>
+                            </div>
+                            <div class="radio">
+                                <label class="col-md-3">
+                                    <input type="radio" name="b" value="1"><1次/周
+                                </label>
+                            </div>
+                            <div class="radio">
+                                <label class="col-md-3">
+                                    <input type="radio" name="b" value="2">1~2次/周
+                                </label>
+                            </div>
+                            <div class="radio">
+                                <label class="col-md-3">
+                                    <input type="radio" name="b" value="3">≧3次/周
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="panel-body">
+                            <label>c.夜间去厕所</label>
+                            <br/>
+
+                            <div class="radio">
+                                <label class="col-md-3">
+                                    <input type="radio" name="c" value="0">无
+                                </label>
+                            </div>
+                            <div class="radio">
+                                <label class="col-md-3">
+                                    <input type="radio" name="c" value="1"><1次/周
+                                </label>
+                            </div>
+                            <div class="radio">
+                                <label class="col-md-3">
+                                    <input type="radio" name="c" value="2">1~2次/周
+                                </label>
+                            </div>
+                            <div class="radio">
+                                <label class="col-md-3">
+                                    <input type="radio" name="c" value="3">≧3次/周
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="panel-body">
+                            <label>d.呼吸不畅</label>
+                            <br/>
+
+                            <div class="radio">
+                                <label class="col-md-3">
+                                    <input type="radio" name="d" value="0">无
+                                </label>
+                            </div>
+                            <div class="radio">
+                                <label class="col-md-3">
+                                    <input type="radio" name="d" value="1"><1次/周
+                                </label>
+                            </div>
+                            <div class="radio">
+                                <label class="col-md-3">
+                                    <input type="radio" name="d" value="2">1~2次/周
+                                </label>
+                            </div>
+                            <div class="radio">
+                                <label class="col-md-3">
+                                    <input type="radio" name="d" value="3">≧3次/周
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="panel-body">
+                            <label>e.咳嗽或鼾声高</label>
+                            <br/>
+
+                            <div class="radio">
+                                <label class="col-md-3">
+                                    <input type="radio" name="e" value="0">无
+                                </label>
+                            </div>
+                            <div class="radio">
+                                <label class="col-md-3">
+                                    <input type="radio" name="e" value="1"><1次/周
+                                </label>
+                            </div>
+                            <div class="radio">
+                                <label class="col-md-3">
+                                    <input type="radio" name="e" value="2">1~2次/周
+                                </label>
+                            </div>
+                            <div class="radio">
+                                <label class="col-md-3">
+                                    <input type="radio" name="e" value="3">≧3次/周
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="panel-body">
+                            <label>f.感觉冷</label>
+                            <br/>
+
+                            <div class="radio">
+                                <label class="col-md-3">
+                                    <input type="radio" name="f" value="0">无
+                                </label>
+                            </div>
+                            <div class="radio">
+                                <label class="col-md-3">
+                                    <input type="radio" name="f" value="1"><1次/周
+                                </label>
+                            </div>
+                            <div class="radio">
+                                <label class="col-md-3">
+                                    <input type="radio" name="f" value="2">1~2次/周
+                                </label>
+                            </div>
+                            <div class="radio">
+                                <label class="col-md-3">
+                                    <input type="radio" name="f" value="3">≧3次/周
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="panel-body">
+                            <label>g.感觉热</label>
+                            <br/>
+
+                            <div class="radio">
+                                <label class="col-md-3">
+                                    <input type="radio" name="g" value="0">无
+                                </label>
+                            </div>
+                            <div class="radio">
+                                <label class="col-md-3">
+                                    <input type="radio" name="g" value="1"><1次/周
+                                </label>
+                            </div>
+                            <div class="radio">
+                                <label class="col-md-3">
+                                    <input type="radio" name="g" value="2">1~2次/周
+                                </label>
+                            </div>
+                            <div class="radio">
+                                <label class="col-md-3">
+                                    <input type="radio" name="g" value="3">≧3次/周
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="panel-body">
+                            <label>h.做噩梦</label>
+                            <br/>
+
+                            <div class="radio">
+                                <label class="col-md-3">
+                                    <input type="radio" name="h" value="0">无
+                                </label>
+                            </div>
+                            <div class="radio">
+                                <label class="col-md-3">
+                                    <input type="radio" name="h" value="1"><1次/周
+                                </label>
+                            </div>
+                            <div class="radio">
+                                <label class="col-md-3">
+                                    <input type="radio" name="h" value="2">1~2次/周
+                                </label>
+                            </div>
+                            <div class="radio">
+                                <label class="col-md-3">
+                                    <input type="radio" name="h" value="3">≧3次/周
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="panel-body">
+                            <label>i.疼痛不适</label>
+                            <br/>
+
+                            <div class="radio">
+                                <label class="col-md-3">
+                                    <input type="radio" name="i" value="0">无
+                                </label>
+                            </div>
+                            <div class="radio">
+                                <label class="col-md-3">
+                                    <input type="radio" name="i" value="1"><1次/周
+                                </label>
+                            </div>
+                            <div class="radio">
+                                <label class="col-md-3">
+                                    <input type="radio" name="i" value="2">1~2次/周
+                                </label>
+                            </div>
+                            <div class="radio">
+                                <label class="col-md-3">
+                                    <input type="radio" name="i" value="3">≧3次/周
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="panel-body">
+                            <label>j.其它影响睡眠的事情</label>
+                            <br/>
+
+                            <div class="radio">
+                                <label class="col-md-3">
+                                    <input type="radio" name="j" value="0">无
+                                </label>
+                            </div>
+                            <div class="radio">
+                                <label class="col-md-3">
+                                    <input type="radio" name="j" value="1"><1次/周
+                                </label>
+                            </div>
+                            <div class="radio">
+                                <label class="col-md-3">
+                                    <input type="radio" name="j" value="2">1~2次/周
+                                </label>
+                            </div>
+                            <div class="radio">
+                                <label class="col-md-3">
+                                    <input type="radio" name="j" value="3">≧3次/周
+                                </label>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="panel panel-default">
+                        <div class="panel-heading">6.近1个月，总的来说，您认为您的睡眠质量.</div>
+
+                        <div class="panel-body">
+
+                            <div class="radio">
+                                <label class="col-md-3">
+                                    <input type="radio" name="q6" value="0">很好
+                                </label>
+                            </div>
+                            <div class="radio">
+                                <label class="col-md-3">
+                                    <input type="radio" name="q6" value="1">较好
+                                </label>
+                            </div>
+                            <div class="radio">
+                                <label class="col-md-3">
+                                    <input type="radio" name="q6" value="2">较差
+                                </label>
+                            </div>
+                            <div class="radio">
+                                <label class="col-md-3">
+                                    <input type="radio" name="q6" value="3">很差
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="panel panel-default">
+                        <div class="panel-heading">7.近1个月，您用药物催眠的情况.</div>
+
+                        <div class="panel-body">
+
+                            <div class="radio">
+                                <label class="col-md-3">
+                                    <input type="radio" name="q7" value="0">无
+                                </label>
+                            </div>
+                            <div class="radio">
+                                <label class="col-md-3">
+                                    <input type="radio" name="q7" value="1"><1次/周
+                                </label>
+                            </div>
+                            <div class="radio">
+                                <label class="col-md-3">
+                                    <input type="radio" name="q7" value="2">1~2次/周
+                                </label>
+                            </div>
+                            <div class="radio">
+                                <label class="col-md-3">
+                                    <input type="radio" name="q7" value="3">≧3次/周
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="panel panel-default">
+                        <div class="panel-heading">8.近1个月，您常感到困倦吗？</div>
+
+                        <div class="panel-body">
+
+                            <div class="radio">
+                                <label class="col-md-3">
+                                    <input type="radio" name="q8" value="0">无
+                                </label>
+                            </div>
+                            <div class="radio">
+                                <label class="col-md-3">
+                                    <input type="radio" name="q8" value="1"><1次/周
+                                </label>
+                            </div>
+                            <div class="radio">
+                                <label class="col-md-3">
+                                    <input type="radio" name="q8" value="2">1~2次/周
+                                </label>
+                            </div>
+                            <div class="radio">
+                                <label class="col-md-3">
+                                    <input type="radio" name="q8" value="3">≧3次/周
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="panel panel-default">
+                        <div class="panel-heading">9.近1个月您做事情的精力不足吗？</div>
+
+                        <div class="panel-body">
+
+                            <div class="radio">
+                                <label class="col-md-3">
+                                    <input type="radio" name="q9" value="0">很好
+                                </label>
+                            </div>
+                            <div class="radio">
+                                <label class="col-md-3">
+                                    <input type="radio" name="q9" value="1">较好
+                                </label>
+                            </div>
+                            <div class="radio">
+                                <label class="col-md-3">
+                                    <input type="radio" name="q9" value="2">较差
+                                </label>
+                            </div>
+                            <div class="radio">
+                                <label class="col-md-3">
+                                    <input type="radio" name="q9" value="3">很差
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary btn-block">提交</button>
+                </form>
+
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

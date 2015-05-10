@@ -1,0 +1,110 @@
+{% extends "base.html" %}
+{% block title %}睡眠质量调查{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <div class="row text-center">
+            <div class="col-xs-12">
+                <h4>匹兹堡睡眠质量指数量表(PSQI)</h4>
+
+                <div class="alert alert-info text-left">
+                    <label>个人信息</label>
+
+                    <div class="form-group ">
+
+                        <div class="input-group col-md-6">
+                            <span class="input-group-addon">住院号</span>
+                            <input type="text" class="form-control" name="adno" value="{{ person.adno }}">
+                        </div>
+                        <div class="input-group col-md-6 ">
+                            <div class="input-group-addon">姓名</div>
+                            <input type="text" class="form-control" name="name" value="{{ person.name }}">
+                        </div>
+                        <div class="input-group col-md-6">
+                            <span class="input-group-addon">性别</span>
+                            <select class="form-control" name="sex">
+                                <option {% ifequal person.sex "男" %} selected="selected" {% endifequal %}>男</option>
+                                <option {% ifequal person.sex "女" %} selected="selected" {% endifequal %}>女</option>
+                            </select>
+                        </div>
+                        <div class="input-group col-md-6">
+                            <span class="input-group-addon">年龄</span>
+                            <input type="number" class="form-control" name="age" value="{{ person.age }}">
+                        </div>
+                        <div class="input-group col-md-6">
+                            <span class="input-group-addon">住址</span>
+                            <select class="form-control" name="home">
+                                <option {% ifequal person.home "农村" %} selected="selected" {% endifequal %}>农村
+                                </option>
+                                <option {% ifequal person.home "城镇" %} selected="selected" {% endifequal %}>城镇
+                                </option>
+                                <option {% ifequal person.home "城市" %} selected="selected" {% endifequal %}>城市
+                                </option>
+                            </select>
+                        </div>
+                        <div class="input-group col-md-6 ">
+                            <div class="input-group-addon">职业</div>
+                            <input type="text" class="form-control" id="name" name="profession"
+                                   value="{{ personinfo.adno }}">
+                        </div>
+                        <div class="input-group col-md-6 ">
+                            <div class="input-group-addon">文化程度</div>
+                            <input type="text" class="form-control" id="name" name="education"
+                                   value="{{ personinfo.education }}">
+                        </div>
+                        <div class="input-group col-md-6 ">
+                            <div class="input-group-addon">既往病史</div>
+                            <input type="text" class="form-control" id="name" name="disease_history"
+                                   value="{{ personinfo.disease_history }}">
+                        </div>
+                        <div class="input-group col-md-6 ">
+                            <div class="input-group-addon">既往病史病龄</div>
+                            <input type="text" class="form-control" id="name" name="disease_age_h"
+                                   value="{{ personinfo.disease_age_h }}">
+                        </div>
+                        <div class="input-group col-md-6 ">
+                            <div class="input-group-addon">现病史</div>
+                            <input type="text" class="form-control" id="name" name="disease_current"
+                                   value="{{ personinfo.disease_current }}">
+                        </div>
+                        <div class="input-group col-md-6 ">
+                            <div class="input-group-addon">现病史病龄</div>
+                            <input type="text" class="form-control" id="name" name="disease_age_c"
+                                   value="{{ personinfo.disease_age_c }}">
+                        </div>
+                        <div class="input-group col-md-6 ">
+                            <div class="input-group-addon">既往用药</div>
+                            <input type="text" class="form-control" id="name" name="used_drugs"
+                                   value="{{ personinfo.used_drugs }}">
+                        </div>
+                        <div class="input-group col-md-6 ">
+                            <div class="input-group-addon">现用药物</div>
+                            <input type="text" class="form-control" id="name" name="using_drugs"
+                                   value="{{ personinfo.using_drugs }}">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="panel panel-default text-left">
+                    <div class="panel-heading">PSQI 总分 = 成分A + 成分B + 成分C + 成分D + 成分E + 成分F + 成分G</div>
+                    <div class="panel-body row">
+                        <label class="col-md-2 control-label">成分A: {{ element_A }}</label>
+                        <label class="col-md-2 control-label">成分B: {{ element_B }}</label>
+                        <label class="col-md-2 control-label">成分C: {{ element_C }}</label>
+                        <label class="col-md-2 control-label">成分D: {{ element_D }}</label>
+                        <label class="col-md-2 control-label">成分E: {{ element_E }}</label>
+                        <label class="col-md-2 control-label">成分F: {{ element_F }}</label>
+                        <label class="col-md-2 control-label">成分G: {{ element_G }}</label>
+                    </div>
+                    <div class="panel-body row">
+                        <label class="col-md-2 control-label">PSQI总分: {{ newquestion.score }}</label>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+    </div>
+
+{% endblock %}

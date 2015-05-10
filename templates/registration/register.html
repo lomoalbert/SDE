@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block title %}注册{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <form class="form-register" action="." method="post" id="login-form">
+                {% csrf_token %}
+                <h2 class="form-register-heading">注册帐号</h2>
+                <label for="inputEmail" class="sr-only">用户名</label>
+                <input type="text" id="id_username" class="form-control" placeholder="用户名" maxlength="254"
+                       name="username" required="" autofocus="">
+                <label for="inputEmail" class="sr-only">用户名</label>
+                <input type="text" id="id_email" class="form-control" placeholder="邮箱" maxlength="254"
+                       name="email" required="" autofocus="">
+                <label for="inputPassword" class="sr-only">密码</label>
+                <input type="password" id="id_password1" class="form-control" placeholder="密码"
+                       name="password1" required="">
+                <label for="inputPassword" class="sr-only">重复密码</label>
+                <input type="password" id="id_password2" class="form-control" placeholder="重复密码"
+                       name="password2" required="">
+                <button class="btn btn-lg btn-primary btn-block" type="submit">注册</button>
+            </form>
+        </div>
+    </div> <!-- /container -->
+
+
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <script src="/static/js/ie10-viewport-bug-workaround.js"></script>
+{% endblock %}

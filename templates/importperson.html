@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+{% block title %}睡眠质量调查{% endblock %}
+
+{% block content %}
+    <div class="container">
+
+        {% if persons %}
+            <div class="panel panel-default">
+                <div class="panel-heading">导入清单</div>
+                <div class="panel-body">
+                    <div class="form-group">
+                        <table class="table table-hover">
+                            <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>姓名</th>
+                                <th>性别</th>
+                                <th>年龄</th>
+                                <th>住院号</th>
+                                <th>病史</th>
+                                <th>住址</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for person in persons %}
+                                <tr>
+                                    <th scope="row">{{ forloop.counter }}</th>
+                                    <td>{{ person.name }}</td>
+                                    <td>{{ person.sex }}</td>
+                                    <td>{{ person.age }}</td>
+                                    <td>{{ person.adno }}</td>
+                                    <td>{{ person.dishis }}</td>
+                                    <td>{{ person.home }}</td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        {% else %}
+            <div class="row form-signin">
+                <form action="." method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label for="personcsv">导入调查用户基本信息表</label>
+                        <input type="file" id="personcsv" name="personcsv" accept="text/csv">
+
+                        <p class="help-block">请务必按照模板提交数据.</p>
+                    </div>
+                    <button class="btn btn-primary btn-block" type="submit">提交</button>
+                </form>
+            </div>
+
+            <div class="row form-signin">
+                <button class="btn btn-primary btn-block" onclick="window.location.href='/static/file/main_person.csv'">
+                    下载模板
+                </button>
+            </div>
+        {% endif %}
+    </div> <!-- /container -->
+
+
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <script src="/static/js/ie10-viewport-bug-workaround.js"></script>
+
+
+{% endblock %}
