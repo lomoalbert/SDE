@@ -187,13 +187,22 @@ def personbyadno(request,adno):
 @login_required
 def manage(request,username=None):
     if not username and not request.user.is_superuser:
-        persons=[Person.objects.get(username=request.user.username),]
+        try:
+            persons=[Person.objects.get(username=request.user.username),]
+        except Person.DoesNotExist:
+            pass
     elif not username and request.user.is_superuser:
         persons=Person.objects.all()
     elif username and not request.user.is_superuser:
-        person=Person.objects.get(username=request.user.username)
-        questions=Question.objects.filter(person=person)
+        try:
+            person=Person.objects.get(username=request.user.username)
+            questions=Question.objects.filter(person=person)
+        except Person.DoesNotExist:
+            pass
     elif username and request.user.is_superuser:
-        person=Person.objects.get(username=username)
-        questions=Question.objects.filter(person=person)
+        try:
+            person=Person.objects.get(username=username)
+            questions=Question.objects.filter(person=person)
+        except Person.DoesNotExist:
+            pass
     return render_to_response('manage.html',locals())

@@ -1,5 +1,7 @@
 {% extends "base.html" %}
 {% block title %}睡眠质量调查{% endblock %}
+{% block javascript %}
+    <script src="/static/js/Chart.min.js"></script>{% endblock %}
 
 {% block content %}
     <div class="container">
@@ -22,7 +24,7 @@
                             </thead>
                             <tbody>
                             {% for person in persons %}
-                                <tr >
+                                <tr>
                                     <th scope="row">{{ forloop.counter }}</th>
                                     <td><a href="/manage/{{ person.username }}/"> {{ person.name }} </a></td>
                                     <td>{{ person.sex }}</td>
@@ -37,40 +39,72 @@
                     </div>
                 </div>
             </div>
-        {% endif %}
+        {% else %}
 
-
-
-        {% if questions %}
-            <div class="panel panel-default">
-                <div class="panel-heading">用户{{ person.name }}的问卷清单</div>
-                <div class="panel-body">
-                    <div class="form-group">
-                        <table class="table table-hover">
-                            <thead>
-                            <tr>
-                                <th>#</th>
-                                <th>姓名</th>
-                                <th>PSQI</th>
-                                <th>提交时间</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            {% for question in questions %}
-                                <tr >
-                                    <th scope="row">{{ forloop.counter }}</th>
-                                    <td> {{ person.name }} </td>
-                                    <td>{{ question.score }}</td>
-                                    <td>{{ question.time_submit }}</td>
-                                </tr>
-                            {% endfor %}
-                            </tbody>
-                        </table>
+            {% if questions %}
+                <div class="panel panel-default">
+                    <div class="panel-heading">用户{{ person.name }}的图表</div>
+                    <div class="panel-body" >
+                            <canvas id="myChart" ></canvas>
+                        <script>
+                            var randomScalingFactor = function () {
+                                return Math.round(Math.random() * 100)
+                            };
+                            var lineChartData = {
+                                labels: ["January", "February", "March", "April", "May", "June", "July"],
+                                datasets: [
+                                    {
+                                        fillColor: "rgba(151,187,205,0.2)",
+                                        strokeColor: "rgba(151,187,205,1)",
+                                        pointColor: "rgba(151,187,205,1)",
+                                        pointStrokeColor: "#fff",
+                                        pointHighlightFill: "#fff",
+                                        pointHighlightStroke: "rgba(151,187,205,1)",
+                                        data: [1,2,3,4,3,2,1]
+                                    }
+                                ]
+                            };
+                            window.onload = function () {
+                                var ctx = document.getElementById("myChart").getContext("2d");
+                                window.myLine = new Chart(ctx).Line(lineChartData, {
+                                    responsive: true
+                                });
+                            }
+                        </script>
                     </div>
                 </div>
-            </div>
+                <div class="panel panel-default">
+                    <div class="panel-heading">用户{{ person.name }}的问卷清单</div>
+                    <div class="panel-body">
+                        <div class="form-group">
+                            <table class="table table-hover">
+                                <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>姓名</th>
+                                    <th>PSQI</th>
+                                    <th>提交时间</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for question in questions %}
+                                    <tr>
+                                        <th scope="row">{{ forloop.counter }}</th>
+                                        <td> {{ person.name }} </td>
+                                        <td>{{ question.score }}</td>
+                                        <td>{{ question.time_submit }}</td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            {% else %}
+                <div class="alert alert-danger" role="alert"><img width="50" height="50" src="/static/img/bad.png">未查询到记录!
+                </div>
+            {% endif %}
         {% endif %}
-
 
     </div> <!-- /container -->
 
