@@ -18,8 +18,6 @@
                                 <th>性别</th>
                                 <th>年龄</th>
                                 <th>住院号</th>
-                                <th>病史</th>
-                                <th>住址</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -30,8 +28,6 @@
                                     <td>{{ person.sex }}</td>
                                     <td>{{ person.age }}</td>
                                     <td>{{ person.adno }}</td>
-                                    <td>{{ person.dishis }}</td>
-                                    <td>{{ person.home }}</td>
                                 </tr>
                             {% endfor %}
                             </tbody>
@@ -44,14 +40,14 @@
             {% if questions %}
                 <div class="panel panel-default">
                     <div class="panel-heading">用户{{ person.name }}的图表</div>
-                    <div class="panel-body" >
-                            <canvas id="myChart" ></canvas>
+                    <div>
+                        <canvas id="myChart"></canvas>
                         <script>
                             var randomScalingFactor = function () {
                                 return Math.round(Math.random() * 100)
                             };
                             var lineChartData = {
-                                labels: ["January", "February", "March", "April", "May", "June", "July"],
+                                labels: [{% for question in questions %}"{{ forloop.counter }}",{% endfor %}],
                                 datasets: [
                                     {
                                         fillColor: "rgba(151,187,205,0.2)",
@@ -60,7 +56,7 @@
                                         pointStrokeColor: "#fff",
                                         pointHighlightFill: "#fff",
                                         pointHighlightStroke: "rgba(151,187,205,1)",
-                                        data: [1,2,3,4,3,2,1]
+                                        data: [{% for question in questions %}"{{ question.score }}",{% endfor %}]
                                     }
                                 ]
                             };
