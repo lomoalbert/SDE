@@ -26,6 +26,11 @@ def register(request):
         )
         user.is_staff = True
         user.save()
+        try:
+            Person.objects.get(username=request.POST.get('username'))
+        except Person.DoesNotExist:
+            person=Person(username=request.POST.get('username'))
+            person.save()
         user = auth.authenticate(username=request.POST.get('username'), password=request.POST.get('password1'))
         auth.login(request, user)
         return HttpResponseRedirect('/')
@@ -38,9 +43,8 @@ def questionnaire(request):
     get:查询用户信息,填充表单中个人信息
     post:查询用户,更新用户信息,计算分数,记录问卷和分数和时间
     '''
-    personinfo_name = ['name', 'sex', 'age', 'adno', 'profession', 'education', 'disease_history', 'disease_age_h',
-                       'disease_current',
-                       'disease_age_c', 'used_drugs', 'using_drugs']
+    personinfo_name = ['name', 'sex', 'age', 'adno','home' 'profession', 'education', 'disease_history', 'disease_age_h',
+                       'disease_current','disease_age_c', 'used_drugs', 'using_drugs']
     try:
         person = Person.objects.get(username=request.user.username)
     except Person.DoesNotExist:
@@ -59,14 +63,13 @@ def questionnaire(request):
         else:
             person = Person.objects.get(username=request.user.username)
             for key in personinfo_name:
-                exec ("person.{key}=request.POST.get('{key}','')".format(key=key))
+                setattr(person,key,request.POST.get(key,''))
         person.save()
         newquestion = Question(person=person,
                                q1=int(request.POST.get('q1', '0')),
                                q2=int(request.POST.get('q2', '0')),
                                q3=int(request.POST.get('q3', '0')),
                                q4=int(request.POST.get('q4', '0')),
-                               q5=int(request.POST.get('q5', '0')),
                                q6=int(request.POST.get('q6', '0')),
                                q7=int(request.POST.get('q7', '0')),
                                q8=int(request.POST.get('q8', '0')),
@@ -143,51 +146,87 @@ def login(request):
 
 @login_required
 def importperson(request):
+    '''
+    普通用户导入自己的数据
+    管理员导入任意人的数据
+    '''
+    personinfo_name = ['name',  'sex', 'age','adno','home' 'profession', 'education', 'disease_history', 'disease_age_h',
+                       'disease_current','disease_age_c', 'used_drugs', 'using_drugs']
+    questioninfo_name=['q1','q2','q3','q4','a','b','c','d','e','f','g','h','i','j','q6','q7','q8','q9','time_submit']
     if request.method == "GET":
         return render_to_response('importperson.html', locals())
     fi = request.FILES['personcsv']
-    persons = []
+    questions = []
     fi.readline()
     for line in fi.readlines():
         attrs = line.replace('\n', '').split(',')
-        personlist = Person.objects.filter(adno=attrs[3])
-        if personlist:
-            person = Person.objects.get(adno=attrs[3])
-            person.name = attrs[0]
-            person.sex = attrs[1]
-            person.age = attrs[2]
-            person.dishis = attrs[4]
-            person.home = attrs[5]
+        if request.user.is_superuser:
+            try:
+                person = Person.objects.get(username=attrs[0])
+            except Person.DoesNotExist:
+                person=Person(username=attrs[0])
+            person.name,person.sex,person.age,person.adno,person.home,person.profession,person.education,person.disease_history,\
+            person.disease_age_h,person.disease_current,person.disease_age_c,person.used_drugs,person.using_drugs=attrs[1:14]
+            person.save()
+            question_list=attrs[14:-1]
         else:
-            person = Person(name=attrs[0],
-                            sex=attrs[1],
-                            age=attrs[2],
-                            adno=attrs[3],
-                            dishis=attrs[4],
-                            home=attrs[5]
-            )
-        person.save()
-        persons.append(person)
-    vardict = {'persons': persons}
-    vardict.update(csrf(request))
+            person=Person.objects.get(username=request.user.username)
+            question_list=attrs[:-1]
+        question_dict=dict(zip(questioninfo_name,map(int,question_list)))
+        question=Question(person=person,**question_dict)
+        question.time_submit=datetime.datetime.strptime(attrs[-1],'%Y%m%d')
+        element_A = question.q6
+        if question.q2 <= 15:
+            element_B = question.a
+        elif question.q2 <= 30:
+            element_B = 1 + question.a
+        elif question.q2 < 60:
+            element_B = 2 + question.a
+        elif question.q2 > 60:
+            element_B = 3 + question.a
+        if question.q4 > 7:
+            element_C = 0
+        elif question.q4 > 6:
+            element_C = 1
+        elif question.q4 >= 5:
+            element_C = 2
+        elif question.q4 < 5:
+            element_C = 3
+        if question.q3 > question.q1:
+            Sleep_efficiency = 1.0 * question.q4 / (24 - question.q3 + question.q1)
+        else:
+            Sleep_efficiency = 1.0 * question.q4 / (question.q1 - question.q3)
+        if Sleep_efficiency > 0.85:
+            element_D = 0
+        elif Sleep_efficiency > 0.75:
+            element_D = 1
+        elif Sleep_efficiency >= 0.65:
+            element_D = 2
+        elif Sleep_efficiency < 0.65:
+            element_D = 3
+        Sleep_disorder = question.b + question.c + question.d + question.e + question.f + question.g + question.h + question.i + question.j
+        if Sleep_disorder == 0:
+            element_E = 0
+        elif Sleep_disorder <= 9:
+            element_E = 1
+        elif Sleep_disorder <= 18:
+            element_E = 2
+        elif Sleep_disorder <= 27:
+            element_E = 3
+        element_F = question.q7
+        Daytime_dysfunction = question.q8 + question.q9
+        if Daytime_dysfunction == 0:
+            element_G = 0
+        elif Daytime_dysfunction <= 2:
+            element_G = 1
+        elif Daytime_dysfunction <= 4:
+            element_G = 2
+        elif Daytime_dysfunction <= 6:
+            element_G = 3
+        question.score = element_A + element_B + element_C + element_D + element_E + element_F + element_G
+        question.save()
+        questions.append(question)
     return render_to_response('importperson.html', locals())
-
-
-def personbyadno(request, adno):
-    personlist = Person.objects.filter(adno=adno)
-    if not personlist:
-        return HttpResponse('None')
-    else:
-        person = Person.objects.get(adno=adno)
-        jsondict = {
-            'adno': person.adno,
-            'name': person.name,
-            'sex': person.sex,
-            'age': person.age,
-            'dishis': person.dishis,
-            'home': person.home
-        }
-        return HttpResponse(json.dumps(jsondict))
 
 
 @login_required

@@ -1,4 +1,3 @@
-姓名,性别,年龄,住院号,病史,住址
-魏哲,男,1,123,无,城镇
-weiz3,男,2,456,无,农村
-魏哲,男,3,789,无,城镇
+question1,question2,question3,question4,question5_a,question5_b,question5_c,question5_d,question5_e,question5_f,question5_g,question5_h,question5_i,question5_j,question6,question7,question8,question9,date
+21,20,7,8,0,1,2,3,0,1,2,3,0,1,2,3,0,1,20150101
+21,20,7,8,0,1,2,3,0,1,2,3,0,1,2,3,0,1,20150102

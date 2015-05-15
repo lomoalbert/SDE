@@ -4,7 +4,7 @@
 {% block content %}
     <div class="container">
 
-        {% if persons %}
+        {% if questionss %}
             <div class="panel panel-default">
                 <div class="panel-heading">导入清单</div>
                 <div class="panel-body">
@@ -17,20 +17,20 @@
                                 <th>性别</th>
                                 <th>年龄</th>
                                 <th>住院号</th>
-                                <th>病史</th>
-                                <th>住址</th>
+                                <th>PSQI</th>
+                                <th>日期</th>
                             </tr>
                             </thead>
                             <tbody>
-                            {% for person in persons %}
+                            {% for question in questions %}
                                 <tr>
                                     <th scope="row">{{ forloop.counter }}</th>
-                                    <td>{{ person.name }}</td>
-                                    <td>{{ person.sex }}</td>
-                                    <td>{{ person.age }}</td>
-                                    <td>{{ person.adno }}</td>
-                                    <td>{{ person.dishis }}</td>
-                                    <td>{{ person.home }}</td>
+                                    <td>{{ question.name }}</td>
+                                    <td>{{ question.sex }}</td>
+                                    <td>{{ question.age }}</td>
+                                    <td>{{ question.adno }}</td>
+                                    <td>{{ question.score }}</td>
+                                    <td>{{ question.time_submit }}</td>
                                 </tr>
                             {% endfor %}
                             </tbody>
@@ -43,7 +43,7 @@
                 <form action="." method="post" enctype="multipart/form-data">
                     {% csrf_token %}
                     <div class="form-group">
-                        <label for="personcsv">导入调查用户基本信息表</label>
+                        <label for="personcsv">导入调查问券数据</label>
                         <input type="file" id="personcsv" name="personcsv" accept="text/csv">
 
                         <p class="help-block">请务必按照模板提交数据.</p>
@@ -53,9 +53,15 @@
             </div>
 
             <div class="row form-signin">
-                <button class="btn btn-primary btn-block" onclick="window.location.href='/static/file/main_person.csv'">
-                    下载模板
+            {% if request.user.is_superuser %}
+                <button class="btn btn-primary btn-block" onclick="window.location.href='/static/file/main_persons.csv'">
+                    下载管理员模板
                 </button>
+            {% else %}
+                <button class="btn btn-primary btn-block" onclick="window.location.href='/static/file/main_person.csv'">
+                    下载用户模板
+                </button>
+            {% endif %}
             </div>
         {% endif %}
     </div> <!-- /container -->
