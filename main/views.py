@@ -227,7 +227,7 @@ def importperson(request):
 
 @login_required
 def manage(request, username=None,method=None):
-    if not request.user.is_superuser:
+    if not request.user.is_superuser:#普通用户仅显示个人数据
             if not username :
                 try:
                     persons = [Person.objects.get(username=request.user.username), ]
@@ -239,26 +239,27 @@ def manage(request, username=None,method=None):
                     questions = Question.objects.filter(person=person)
                 except Person.DoesNotExist:
                     pass
-    elif request.user.is_superuser:
-        if not username:
+    elif request.user.is_superuser:#管理员可显示任何人数据
+        if not username:#显示所有人的数据
             persons = Person.objects.all()
-        elif username and method=='download':
-            person = Person.objects.get(username=username)
-            questions = Question.objects.filter(person=person)
-            content=''
-            for i in questions:
-                line=[str(getattr(i,attr)) for attr in ['q1','q2','q3','q4','a','b','c','d','e','f','g','h','i','j','q6','q7','q8','q9','score','time_submit']]
-                content+=username+'\t'+'\t'.join(line)+'\n'
-            response=HttpResponse(content=content)
-            response['Content-Type'] = 'text/csv'
-            response['Content-Disposition'] = 'attachment;filename="{username}.csv"'.format(username=username)
-            return response
-        elif username:
-            try:
+        else:
+            if method=='download':#下载某人的数据
                 person = Person.objects.get(username=username)
                 questions = Question.objects.filter(person=person)
-            except Person.DoesNotExist:
-                pass
+                content=''
+                for i in questions:
+                    line=[str(getattr(i,attr)) for attr in ['q1','q2','q3','q4','a','b','c','d','e','f','g','h','i','j','q6','q7','q8','q9','score','time_submit']]
+                    content+=username+'\t'+'\t'.join(line)+'\n'
+                response=HttpResponse(content=content)
+                response['Content-Type'] = 'text/csv'
+                response['Content-Disposition'] = 'attachment;filename="{username}.csv"'.format(username=username)
+                return response
+            else:#显示某人的数据
+                try:
+                    person = Person.objects.get(username=username)
+                    questions = Question.objects.filter(person=person)
+                except Person.DoesNotExist:
+                    pass
     '''
     if not username and not request.user.is_superuser:
         try:

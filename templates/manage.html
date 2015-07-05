@@ -22,7 +22,7 @@
                 <div class="panel-heading">调查用户清单</div>
                 <div class="panel-body">
                     <div class="row alert alert-success" role="alert">
-                        <form class="form-horizontal">
+                        <form class="form-horizontal" method="POST" action=".">
 
                             <div class="col-lg-2">
                                 <select class="form-control" name="searchby">
@@ -33,9 +33,9 @@
                             <div class="col-lg-4">
                                 <div class="input-group">
                                     <!-- /btn-group -->
-                                    <input type="text" class="form-control" aria-label="...">
+                                    <input type="text" class="form-control" aria-label="..." name="key">
                                 <span class="input-group-btn">
-                                    <button class="btn btn-default" type="button">搜索</button>
+                                    <button class="btn btn-default" type="submit">搜索</button>
                                 </span>
                                 </div>
                                 <!-- /input-group -->
