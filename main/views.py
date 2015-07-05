@@ -241,7 +241,15 @@ def manage(request, username=None,method=None):
                     pass
     elif request.user.is_superuser:#管理员可显示任何人数据
         if not username:#显示所有人的数据
-            persons = Person.objects.all()
+            searchby = request.POST.get("searchby",None)
+            key = request.POST.get("key",None)
+            if searchby and key:
+                if searchby == "name":
+                    persons = Person.objects.filter(name=key)
+                elif searchby == "adno":
+                    persons = Person.objects.filter(adno=key)
+            else:
+                persons = Person.objects.all()
         else:
             if method=='download':#下载某人的数据
                 person = Person.objects.get(username=username)
