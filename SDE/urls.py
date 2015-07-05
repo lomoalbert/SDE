@@ -14,6 +14,7 @@ urlpatterns = patterns('',
     url(r'^importperson/$','main.views.importperson'),
     url(r'^manage/$','main.views.manage'),
     url(r'^manage/(?P<username>\w+)/$','main.views.manage'),
+    url(r'^manage/(?P<username>\w+)/(?P<method>\w+)/$','main.views.manage'),
     # url(r'^blog/', include('blog.urls')),
 
     url(r'^admin/', include(admin.site.urls)),

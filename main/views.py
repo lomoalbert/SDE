@@ -1,15 +1,12 @@
 # coding=utf8
 
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect,HttpResponse
 from django.contrib.auth.models import User
 from django.contrib import auth
 from django.shortcuts import render_to_response
-from django.http import HttpResponse
 import datetime
 from models import Person, Question
 from django.contrib.auth.decorators import login_required
-from django.core.context_processors import csrf
-import json
 
 
 # Create your views here.
@@ -24,7 +21,6 @@ def register(request):
                                         email=request.POST.get('email'),
                                         password=request.POST.get('password1'),
         )
-        user.is_staff = True
         user.save()
         try:
             Person.objects.get(username=request.POST.get('username'))
@@ -43,7 +39,7 @@ def questionnaire(request):
     get:查询用户信息,填充表单中个人信息
     post:查询用户,更新用户信息,计算分数,记录问卷和分数和时间
     '''
-    personinfo_name = ['name', 'sex', 'age', 'adno','home' 'profession', 'education', 'disease_history', 'disease_age_h',
+    personinfo_name = ['name', 'sex', 'age', 'adno','home','profession', 'education', 'disease_history', 'disease_age_h',
                        'disease_current','disease_age_c', 'used_drugs', 'using_drugs']
     try:
         person = Person.objects.get(username=request.user.username)
@@ -230,7 +226,40 @@ def importperson(request):
 
 
 @login_required
-def manage(request, username=None):
+def manage(request, username=None,method=None):
+    if not request.user.is_superuser:
+            if not username :
+                try:
+                    persons = [Person.objects.get(username=request.user.username), ]
+                except Person.DoesNotExist:
+                    pass
+            elif username :
+                try:
+                    person = Person.objects.get(username=request.user.username)
+                    questions = Question.objects.filter(person=person)
+                except Person.DoesNotExist:
+                    pass
+    elif request.user.is_superuser:
+        if not username:
+            persons = Person.objects.all()
+        elif username and method=='download':
+            person = Person.objects.get(username=username)
+            questions = Question.objects.filter(person=person)
+            content=''
+            for i in questions:
+                line=[str(getattr(i,attr)) for attr in ['q1','q2','q3','q4','a','b','c','d','e','f','g','h','i','j','q6','q7','q8','q9','score','time_submit']]
+                content+=username+'\t'+'\t'.join(line)+'\n'
+            response=HttpResponse(content=content)
+            response['Content-Type'] = 'text/csv'
+            response['Content-Disposition'] = 'attachment;filename="{username}.csv"'.format(username=username)
+            return response
+        elif username:
+            try:
+                person = Person.objects.get(username=username)
+                questions = Question.objects.filter(person=person)
+            except Person.DoesNotExist:
+                pass
+    '''
     if not username and not request.user.is_superuser:
         try:
             persons = [Person.objects.get(username=request.user.username), ]
@@ -250,4 +279,5 @@ def manage(request, username=None):
             questions = Question.objects.filter(person=person)
         except Person.DoesNotExist:
             pass
+            '''
     return render_to_response('manage.html', locals())

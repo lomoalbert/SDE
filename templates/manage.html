@@ -1,7 +1,19 @@
 {% extends "base.html" %}
 {% block title %}睡眠质量调查{% endblock %}
 {% block javascript %}
-    <script src="/static/js/Chart.min.js"></script>{% endblock %}
+    <script src="/static/js/Chart.min.js"></script>
+    <script type="text/javascript">
+        function discontrol(itemid) {
+
+            if (document.getElementById(itemid).style.display == 'none') {
+                document.getElementById(itemid).style.display = "";
+            }
+            else {
+                document.getElementById(itemid).style.display = "none";
+            }
+        }
+    </script>
+{% endblock %}
 
 {% block content %}
     <div class="container">
@@ -9,11 +21,35 @@
             <div class="panel panel-default">
                 <div class="panel-heading">调查用户清单</div>
                 <div class="panel-body">
-                    <div class="form-group">
+                    <div class="row alert alert-success" role="alert">
+                        <form class="form-horizontal">
+
+                            <div class="col-lg-2">
+                                <select class="form-control" name="searchby">
+                                    <option value="name">姓名</option>
+                                    <option value="adno">住院号</option>
+                                </select>
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="input-group">
+                                    <!-- /btn-group -->
+                                    <input type="text" class="form-control" aria-label="...">
+                                <span class="input-group-btn">
+                                    <button class="btn btn-default" type="button">搜索</button>
+                                </span>
+                                </div>
+                                <!-- /input-group -->
+                            </div>
+                            <!-- /.col-lg-6 -->
+
+                        </form>
+                    </div>
+                    <!-- /.row -->
+                    <div class="list-group">
                         <table class="table table-hover">
                             <thead>
                             <tr>
-                                <th>#</th>
+                                <th>住院号</th>
                                 <th>姓名</th>
                                 <th>性别</th>
                                 <th>年龄</th>
@@ -23,7 +59,7 @@
                             <tbody>
                             {% for person in persons %}
                                 <tr>
-                                    <th scope="row">{{ forloop.counter }}</th>
+                                    <th scope="row">{{ person.adno }}</th>
                                     <td><a href="/manage/{{ person.username }}/"> {{ person.name }} </a></td>
                                     <td>{{ person.sex }}</td>
                                     <td>{{ person.age }}</td>
@@ -33,7 +69,27 @@
                             </tbody>
                         </table>
                     </div>
+                    <nav>
+                        <ul class="pagination">
+                            <li>
+                                <a href="#" aria-label="Previous">
+                                    <span aria-hidden="true">&laquo;</span>
+                                </a>
+                            </li>
+                            <li><a href="#">1</a></li>
+                            <li><a href="#">2</a></li>
+                            <li><a href="#">3</a></li>
+                            <li><a href="#">4</a></li>
+                            <li><a href="#">5</a></li>
+                            <li>
+                                <a href="#" aria-label="Next">
+                                    <span aria-hidden="true">&raquo;</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </nav>
                 </div>
+
             </div>
         {% else %}
 
@@ -70,7 +126,8 @@
                     </div>
                 </div>
                 <div class="panel panel-default">
-                    <div class="panel-heading">用户{{ person.name }}的问卷清单</div>
+                    <div class="panel-heading">用户{{ person.name }}的问卷清单<a class="pull-right" href="./download/">下载表格</a>
+                    </div>
                     <div class="panel-body">
                         <div class="form-group">
                             <table class="table table-hover">
@@ -84,16 +141,38 @@
                                 </thead>
                                 <tbody>
                                 {% for question in questions %}
-                                    <tr>
+                                    <tr onclick="javascript:discontrol('desc{{ forloop.counter }}')">
                                         <th scope="row">{{ forloop.counter }}</th>
                                         <td> {{ person.name }} </td>
                                         <td>{{ question.score }}</td>
-                                        <td>{{ question.time_submit }}</td>
+                                        <td>{{ question.time_submit|date:"Y-m-d H:i:s" }}</td>
+                                    </tr>
+                                    <tr id="desc{{ forloop.counter }}" style="display: none;">
+                                        <td colspan="4">{{ question.q1 }} {{ question.q2 }} {{ question.q3 }} {{ question.q4 }} {{ question.a }} {{ question.b }} {{ question.c }} {{ question.d }} {{ question.e }} {{ question.f }} {{ question.g }} {{ question.h }} {{ question.i }} {{ question.j }} {{ question.q6 }} {{ question.q7 }} {{ question.q8 }} {{ question.q9 }}  </td>
                                     </tr>
                                 {% endfor %}
                                 </tbody>
                             </table>
                         </div>
+                        <nav>
+                            <ul class="pagination">
+                                <li>
+                                    <a href="#" aria-label="Previous">
+                                        <span aria-hidden="true">&laquo;</span>
+                                    </a>
+                                </li>
+                                <li><a href="#">1</a></li>
+                                <li><a href="#">2</a></li>
+                                <li><a href="#">3</a></li>
+                                <li><a href="#">4</a></li>
+                                <li><a href="#">5</a></li>
+                                <li>
+                                    <a href="#" aria-label="Next">
+                                        <span aria-hidden="true">&raquo;</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </nav>
                     </div>
                 </div>
             {% else %}

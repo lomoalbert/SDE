@@ -1,25 +1,6 @@
 {% extends "base.html" %}
 {% block title %}睡眠质量调查{% endblock %}
 
-{% block javascript %}
-    <script type="text/javascript">
-
-        $(document).ready(function () {
-            $("#adno").change(function () {
-                $.get("/adno/" + $("#adno").val(), function (data, status) {
-                    jdata = JSON.parse(data);
-                    $("#name").val(jdata.name);
-                    $("#sex").val(jdata.sex);
-                    $("#age").val(jdata.age);
-                    $("#dishis").val(jdata.dishis);
-                    $("#home").val(jdata.home);
-                });
-            });
-        });
-    </script>
-{% endblock %}
-
-
 
 {% block content %}
     <div class="container">
@@ -37,12 +18,14 @@
 
                         <div class="form-group ">
                             <div class="input-group col-md-6">
-                                <span class="input-group-addon">住院号</span>
-                                <input type="text" class="form-control" name="adno" value="{{ person.adno }}">
+                                <span class="input-group-addon ">住院号</span>
+                                <input type="text" class="form-control" name="adno" value="{{ person.adno }}"
+                                       required>
                             </div>
                             <div class="input-group col-md-6 ">
-                                <div class="input-group-addon">姓名</div>
-                                <input type="text" class="form-control" name="name" value="{{ person.name }}">
+                                <span class="input-group-addon ">姓名</span>
+                                <input type="text" class="form-control" name="name" value="{{ person.name }}"
+                                       required>
                             </div>
                             <div class="input-group col-md-6">
                                 <span class="input-group-addon">性别</span>
@@ -53,7 +36,7 @@
                             </div>
                             <div class="input-group col-md-6">
                                 <span class="input-group-addon">年龄</span>
-                                <input type="number" class="form-control" name="age" value="{{ person.age }}">
+                                <input type="number" class="form-control" name="age" value="{{ person.age }}" required>
                             </div>
                             <div class="input-group col-md-6">
                                 <span class="input-group-addon">住址</span>
@@ -69,42 +52,42 @@
                             <div class="input-group col-md-6 ">
                                 <div class="input-group-addon">职业</div>
                                 <input type="text" class="form-control" id="name" name="profession"
-                                       value="{{ personinfo.adno }}">
+                                       value="{{ personinfo.profession }}" required>
                             </div>
                             <div class="input-group col-md-6 ">
                                 <div class="input-group-addon">文化程度</div>
                                 <input type="text" class="form-control" id="name" name="education"
-                                       value="{{ personinfo.education }}">
+                                       value="{{ personinfo.education }}" required>
                             </div>
                             <div class="input-group col-md-6 ">
                                 <div class="input-group-addon">既往病史</div>
                                 <input type="text" class="form-control" id="name" name="disease_history"
-                                       value="{{ personinfo.disease_history }}">
+                                       value="{{ personinfo.disease_history }}" required>
                             </div>
                             <div class="input-group col-md-6 ">
                                 <div class="input-group-addon">既往病史病龄</div>
                                 <input type="text" class="form-control" id="name" name="disease_age_h"
-                                       value="{{ personinfo.disease_age_h }}">
+                                       value="{{ personinfo.disease_age_h }}" required>
                             </div>
                             <div class="input-group col-md-6 ">
                                 <div class="input-group-addon">现病史</div>
                                 <input type="text" class="form-control" id="name" name="disease_current"
-                                       value="{{ personinfo.disease_current }}">
+                                       value="{{ personinfo.disease_current }}" required>
                             </div>
                             <div class="input-group col-md-6 ">
                                 <div class="input-group-addon">现病史病龄</div>
                                 <input type="text" class="form-control" id="name" name="disease_age_c"
-                                       value="{{ personinfo.disease_age_c }}">
+                                       value="{{ personinfo.disease_age_c }}" required>
                             </div>
                             <div class="input-group col-md-6 ">
                                 <div class="input-group-addon">既往用药</div>
                                 <input type="text" class="form-control" id="name" name="used_drugs"
-                                       value="{{ personinfo.used_drugs }}">
+                                       value="{{ personinfo.used_drugs }}" required>
                             </div>
                             <div class="input-group col-md-6 ">
                                 <div class="input-group-addon">现用药物</div>
                                 <input type="text" class="form-control" id="name" name="using_drugs"
-                                       value="{{ personinfo.using_drugs }}">
+                                       value="{{ personinfo.using_drugs }}" required>
                             </div>
                         </div>
                     </div>
@@ -147,7 +130,7 @@
                         <div class="panel-heading">2.近1个月，从上床到入睡通常需要_分钟。</div>
                         <div class="panel-body">
                             <div class="form-group">
-                                <input type="number" class="form-control" name="q2">
+                                <input type="number" class="form-control" name="q2" required>
                             </div>
                         </div>
                     </div>
