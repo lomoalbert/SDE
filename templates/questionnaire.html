@@ -18,28 +18,28 @@
 
                         <div class="form-group ">
                             <div class="input-group col-md-6">
-                                <span class="input-group-addon">住院号</span>
+                                <span class="input-group-addon">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;住院号&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
                                 <input type="text" class="form-control" name="adno" value="{{ person.adno }}"
                                        required>
                             </div>
                             <div class="input-group col-md-6 ">
-                                <span class="input-group-addon ">姓名</span>
+                                <span class="input-group-addon ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;姓名&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
                                 <input type="text" class="form-control" name="name" value="{{ person.name }}"
                                        required>
                             </div>
                             <div class="input-group col-md-6">
-                                <span class="input-group-addon">性别</span>
+                                <span class="input-group-addon">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;性别&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
                                 <select class="form-control" name="sex">
                                     <option {% ifequal person.sex "男" %} selected="selected" {% endifequal %}>男</option>
                                     <option {% ifequal person.sex "女" %} selected="selected" {% endifequal %}>女</option>
                                 </select>
                             </div>
                             <div class="input-group col-md-6">
-                                <span class="input-group-addon">年龄</span>
+                                <span class="input-group-addon">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;年龄&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
                                 <input type="number" class="form-control" name="age" value="{{ person.age }}" required>
                             </div>
                             <div class="input-group col-md-6">
-                                <span class="input-group-addon">住址</span>
+                                <span class="input-group-addon">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;住址&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
                                 <select class="form-control" name="home">
                                     <option {% ifequal person.home "农村" %} selected="selected" {% endifequal %}>农村
                                     </option>
@@ -50,17 +50,17 @@
                                 </select>
                             </div>
                             <div class="input-group col-md-6 ">
-                                <div class="input-group-addon">职业</div>
+                                <div class="input-group-addon">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;职业&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
                                 <input type="text" class="form-control" id="name" name="profession"
                                        value="{{ personinfo.profession }}" required>
                             </div>
                             <div class="input-group col-md-6 ">
-                                <div class="input-group-addon">文化程度</div>
+                                <div class="input-group-addon">&nbsp;&nbsp;&nbsp;&nbsp;文化程度&nbsp;&nbsp;&nbsp;</div>
                                 <input type="text" class="form-control" id="name" name="education"
                                        value="{{ personinfo.education }}" required>
                             </div>
                             <div class="input-group col-md-6 ">
-                                <div class="input-group-addon">既往病史</div>
+                                <div class="input-group-addon">&nbsp;&nbsp;&nbsp;&nbsp;既往病史&nbsp;&nbsp;&nbsp;</div>
                                 <input type="text" class="form-control" id="name" name="disease_history"
                                        value="{{ personinfo.disease_history }}" required>
                             </div>
@@ -70,22 +70,22 @@
                                        value="{{ personinfo.disease_age_h }}" required>
                             </div>
                             <div class="input-group col-md-6 ">
-                                <div class="input-group-addon">现病史</div>
+                                <div class="input-group-addon">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;现病史&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
                                 <input type="text" class="form-control" id="name" name="disease_current"
                                        value="{{ personinfo.disease_current }}" required>
                             </div>
                             <div class="input-group col-md-6 ">
-                                <div class="input-group-addon">现病史病龄</div>
+                                <div class="input-group-addon">&nbsp;&nbsp;现病史病龄&nbsp;&nbsp;</div>
                                 <input type="text" class="form-control" id="name" name="disease_age_c"
                                        value="{{ personinfo.disease_age_c }}" required>
                             </div>
                             <div class="input-group col-md-6 ">
-                                <div class="input-group-addon">既往用药</div>
+                                <div class="input-group-addon">&nbsp;&nbsp;&nbsp;&nbsp;既往用药&nbsp;&nbsp;&nbsp;</div>
                                 <input type="text" class="form-control" id="name" name="used_drugs"
                                        value="{{ personinfo.used_drugs }}" required>
                             </div>
                             <div class="input-group col-md-6 ">
-                                <div class="input-group-addon">现用药物</div>
+                                <div class="input-group-addon">&nbsp;&nbsp;&nbsp;&nbsp;现用药物&nbsp;&nbsp;&nbsp;</div>
                                 <input type="text" class="form-control" id="name" name="using_drugs"
                                        value="{{ personinfo.using_drugs }}" required>
                             </div>

@@ -155,7 +155,15 @@ def importperson(request):
     questions = []
     fi.readline()
     for line in fi.readlines():
-        attrs = line.replace('\n', '').split(',')
+        try:
+            line=line.decode('utf8')
+        except:
+            try:
+                line=line.decode('gbk')
+            except:
+                pass
+        spli=',' if line.count(',')>line.count('\t') else '\t'
+        attrs = line.replace('\n', '').replace('\r', '').split(spli)
         if request.user.is_superuser:
             try:
                 person = Person.objects.get(username=attrs[0])
@@ -281,11 +289,11 @@ def manage(request, username=None,method=None):
             if method=='download':#下载某人的数据
                 person = Person.objects.get(username=username)
                 questions = Question.objects.filter(person=person)
-                content='username\tquestion1\tquestion2\tquestion3\tquestion4\tquestion5_a\tquestion5_b\tquestion5_c\tquestion5_d\tquestion5_e\tquestion5_f\tquestion5_g\tquestion5_h\tquestion5_i\tquestion5_j\tquestion6\tquestion7\tquestion8\tquestion9\tscore\tdate\n'
+                content='username,question1,question2,question3,question4,question5_a,question5_b,question5_c,question5_d,question5_e,question5_f,question5_g,question5_h,question5_i,question5_j,question6,question7,question8,question9,score,date\n'
                 for i in questions:
                     line=[str(getattr(i,attr)) for attr in ['q1','q2','q3','q4','a','b','c','d','e','f','g','h','i','j','q6','q7','q8','q9','score','time_submit']]
-                    content+=username+'\t'+'\t'.join(line)+'\n'
-                response=HttpResponse(content=content)
+                    content+=username+','+','.join(line)+'\n'
+                response=HttpResponse(content=content.decode('utf-8').encode('utf-8-sig'))
                 response['Content-Type'] = 'text/csv'
                 response['Content-Disposition'] = 'attachment;filename="{username}.csv"'.format(username=username)
                 return response

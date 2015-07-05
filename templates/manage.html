@@ -57,7 +57,7 @@
                                 <th>姓名</th>
                                 <th>性别</th>
                                 <th>年龄</th>
-                                <th>操作</th>
+                                <th></th>
                             </tr>
                             </thead>
                             <tbody>
@@ -68,39 +68,24 @@
                                     <td>{{ person.name }}</td>
                                     <td>{{ person.sex }}</td>
                                     <td>{{ person.age }}</td>
-                                    <td><a href="/manage/{{ person.username }}/">
-                                        <button class="btn btn-sm btn-primary">问卷记录</button>
-                                    </a>
-                                        <a href="/person/{{ person.username }}/update/">
-                                            <button class="btn btn-sm btn-primary">信息更新</button>
-                                        </a>
-                                        <a href="/person/{{ person.username }}/delete/">
-                                            <button class="btn btn-sm btn-primary">删除</button>
-                                        </a></td>
+                                    <td>
+                                        <div class="pull-right">
+                                            <a href="/manage/{{ person.username }}/">
+                                                <button class="btn btn-sm btn-primary">问卷记录</button>
+                                            </a>
+                                            <a href="/person/{{ person.username }}/update/">
+                                                <button class="btn btn-sm btn-primary">个人信息</button>
+                                            </a>
+                                            <a href="/person/{{ person.username }}/delete/">
+                                                <button class="btn btn-sm btn-danger">删除</button>
+                                            </a>
+                                        </div>
+                                    </td>
                                 </tr>
                             {% endfor %}
                             </tbody>
                         </table>
                     </div>
-                    <nav>
-                        <ul class="pagination">
-                            <li>
-                                <a href="#" aria-label="Previous">
-                                    <span aria-hidden="true">&laquo;</span>
-                                </a>
-                            </li>
-                            <li><a href="#">1</a></li>
-                            <li><a href="#">2</a></li>
-                            <li><a href="#">3</a></li>
-                            <li><a href="#">4</a></li>
-                            <li><a href="#">5</a></li>
-                            <li>
-                                <a href="#" aria-label="Next">
-                                    <span aria-hidden="true">&raquo;</span>
-                                </a>
-                            </li>
-                        </ul>
-                    </nav>
                 </div>
 
             </div>
@@ -192,25 +177,6 @@
                                 </tbody>
                             </table>
                         </div>
-                        <nav>
-                            <ul class="pagination">
-                                <li>
-                                    <a href="#" aria-label="Previous">
-                                        <span aria-hidden="true">&laquo;</span>
-                                    </a>
-                                </li>
-                                <li><a href="#">1</a></li>
-                                <li><a href="#">2</a></li>
-                                <li><a href="#">3</a></li>
-                                <li><a href="#">4</a></li>
-                                <li><a href="#">5</a></li>
-                                <li>
-                                    <a href="#" aria-label="Next">
-                                        <span aria-hidden="true">&raquo;</span>
-                                    </a>
-                                </li>
-                            </ul>
-                        </nav>
                     </div>
                 </div>
             {% else %}
