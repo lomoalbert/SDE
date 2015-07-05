@@ -224,6 +224,16 @@ def importperson(request):
         questions.append(question)
     return render_to_response('importperson.html', locals())
 
+@login_required
+def doperson(request,username=None):
+    if request.user.is_superuser:
+        if request.method=="POST" and request.POST.get('do',None)=='delete':#执行删除
+            person=Person.objects.get(username=username)
+        else:显示确定界面
+
+    else:
+        return
+
 
 @login_required
 def manage(request, username=None,method=None):

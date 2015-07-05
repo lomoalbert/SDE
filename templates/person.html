@@ -53,7 +53,7 @@
                                 <th>姓名</th>
                                 <th>性别</th>
                                 <th>年龄</th>
-                                <th></th>
+                                <th>住院号</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -64,7 +64,6 @@
                                     <td>{{ person.sex }}</td>
                                     <td>{{ person.age }}</td>
                                     <td>{{ person.adno }}</td>
-                                    <td><a href="/person/{{ person.username }}"><button class="btn btn-primary btn-block">管理</button></a></td>
                                 </tr>
                             {% endfor %}
                             </tbody>
