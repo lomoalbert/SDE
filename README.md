@@ -1,3 +1,3 @@
 # SDE
-Private Projec
+Private Project
 
