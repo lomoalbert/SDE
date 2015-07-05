@@ -53,7 +53,7 @@
                                 <th>姓名</th>
                                 <th>性别</th>
                                 <th>年龄</th>
-                                <th></th>
+                                <th>操作</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -63,8 +63,10 @@
                                     <td><a href="/manage/{{ person.username }}/"> {{ person.name }} </a></td>
                                     <td>{{ person.sex }}</td>
                                     <td>{{ person.age }}</td>
-                                    <td>{{ person.adno }}</td>
-                                    <td><a href="/person/{{ person.username }}"><button class="btn btn-primary btn-block">管理</button></a></td>
+                                    <td><a href="/manage/{{ person.username }}/"><button class="btn btn-primary">问卷记录</button></a>
+                                    <a href="/person/{{ person.username }}/info/"><button class="btn btn-primary">个人信息</button></a>
+                                    <a href="/person/{{ person.username }}/update/"><button class="btn btn-primary">更新</button></a>
+                                    <a href="/person/{{ person.username }}/delete/"><button class="btn btn-primary">删除</button></a></td>
                                 </tr>
                             {% endfor %}
                             </tbody>

@@ -1,185 +1,125 @@
 {% extends "base.html" %}
 {% block title %}睡眠质量调查{% endblock %}
 {% block javascript %}
-    <script src="/static/js/Chart.min.js"></script>
-    <script type="text/javascript">
-        function discontrol(itemid) {
-
-            if (document.getElementById(itemid).style.display == 'none') {
-                document.getElementById(itemid).style.display = "";
-            }
-            else {
-                document.getElementById(itemid).style.display = "none";
-            }
-        }
-    </script>
 {% endblock %}
 
 {% block content %}
     <div class="container">
-        {% if persons %}
-            <div class="panel panel-default">
-                <div class="panel-heading">调查用户清单</div>
-                <div class="panel-body">
-                    <div class="row alert alert-success" role="alert">
-                        <form class="form-horizontal" method="POST" action=".">
+        {% ifequal result 0 %}
+        {% endifequal %}
 
-                            <div class="col-lg-2">
-                                <select class="form-control" name="searchby">
-                                    <option value="name">姓名</option>
-                                    <option value="adno">住院号</option>
+        {% ifequal result 1 %}
+            {% ifequal method "delete" %}
+                确定要删除{{ person.name }}?
+                <form action="." method="post">
+                    <button type="submit" class="btn btn-primary btn-block">确定</button>
+                </form>
+            {% endifequal %}
+
+            {% ifequal method "update" %}
+                <form class="text-left" action="." method="post">
+
+                    {% csrf_token %}
+                    <div class="alert alert-info">
+                        <label>个人信息</label>
+
+                        <div class="form-group ">
+                            <div class="input-group col-md-6">
+                                <span class="input-group-addon">住院号</span>
+                                <input type="text" class="form-control" name="adno" value="{{ person.adno }}"
+                                       required>
+                            </div>
+                            <div class="input-group col-md-6 ">
+                                <span class="input-group-addon ">姓名</span>
+                                <input type="text" class="form-control" name="name" value="{{ person.name }}"
+                                       required>
+                            </div>
+                            <div class="input-group col-md-6">
+                                <span class="input-group-addon">性别</span>
+                                <select class="form-control" name="sex">
+                                    <option {% ifequal person.sex "男" %} selected="selected" {% endifequal %}>男</option>
+                                    <option {% ifequal person.sex "女" %} selected="selected" {% endifequal %}>女</option>
                                 </select>
                             </div>
-                            <div class="col-lg-4">
-                                <div class="input-group">
-                                    <!-- /btn-group -->
-                                    <input type="text" class="form-control" aria-label="..." name="key">
-                                <span class="input-group-btn">
-                                    <button class="btn btn-default" type="submit">搜索</button>
-                                </span>
-                                </div>
-                                <!-- /input-group -->
+                            <div class="input-group col-md-6">
+                                <span class="input-group-addon">年龄</span>
+                                <input type="number" class="form-control" name="age" value="{{ person.age }}" required>
                             </div>
-                            <!-- /.col-lg-6 -->
-
-                        </form>
-                    </div>
-                    <!-- /.row -->
-                    <div class="list-group">
-                        <table class="table table-hover">
-                            <thead>
-                            <tr>
-                                <th>住院号</th>
-                                <th>姓名</th>
-                                <th>性别</th>
-                                <th>年龄</th>
-                                <th>住院号</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            {% for person in persons %}
-                                <tr>
-                                    <th scope="row">{{ person.adno }}</th>
-                                    <td><a href="/manage/{{ person.username }}/"> {{ person.name }} </a></td>
-                                    <td>{{ person.sex }}</td>
-                                    <td>{{ person.age }}</td>
-                                    <td>{{ person.adno }}</td>
-                                </tr>
-                            {% endfor %}
-                            </tbody>
-                        </table>
-                    </div>
-                    <nav>
-                        <ul class="pagination">
-                            <li>
-                                <a href="#" aria-label="Previous">
-                                    <span aria-hidden="true">&laquo;</span>
-                                </a>
-                            </li>
-                            <li><a href="#">1</a></li>
-                            <li><a href="#">2</a></li>
-                            <li><a href="#">3</a></li>
-                            <li><a href="#">4</a></li>
-                            <li><a href="#">5</a></li>
-                            <li>
-                                <a href="#" aria-label="Next">
-                                    <span aria-hidden="true">&raquo;</span>
-                                </a>
-                            </li>
-                        </ul>
-                    </nav>
-                </div>
-
-            </div>
-        {% else %}
-
-            {% if questions %}
-                <div class="panel panel-default">
-                    <div class="panel-heading">用户{{ person.name }}的图表</div>
-                    <div>
-                        <canvas id="myChart"></canvas>
-                        <script>
-                            var randomScalingFactor = function () {
-                                return Math.round(Math.random() * 100)
-                            };
-                            var lineChartData = {
-                                labels: [{% for question in questions %}"{{ forloop.counter }}",{% endfor %}],
-                                datasets: [
-                                    {
-                                        fillColor: "rgba(151,187,205,0.2)",
-                                        strokeColor: "rgba(151,187,205,1)",
-                                        pointColor: "rgba(151,187,205,1)",
-                                        pointStrokeColor: "#fff",
-                                        pointHighlightFill: "#fff",
-                                        pointHighlightStroke: "rgba(151,187,205,1)",
-                                        data: [{% for question in questions %}"{{ question.score }}",{% endfor %}]
-                                    }
-                                ]
-                            };
-                            window.onload = function () {
-                                var ctx = document.getElementById("myChart").getContext("2d");
-                                window.myLine = new Chart(ctx).Line(lineChartData, {
-                                    responsive: true
-                                });
-                            }
-                        </script>
-                    </div>
-                </div>
-                <div class="panel panel-default">
-                    <div class="panel-heading">用户{{ person.name }}的问卷清单<a class="pull-right" href="./download/">下载表格</a>
-                    </div>
-                    <div class="panel-body">
-                        <div class="form-group">
-                            <table class="table table-hover">
-                                <thead>
-                                <tr>
-                                    <th>#</th>
-                                    <th>姓名</th>
-                                    <th>PSQI</th>
-                                    <th>提交时间</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                {% for question in questions %}
-                                    <tr onclick="javascript:discontrol('desc{{ forloop.counter }}')">
-                                        <th scope="row">{{ forloop.counter }}</th>
-                                        <td> {{ person.name }} </td>
-                                        <td>{{ question.score }}</td>
-                                        <td>{{ question.time_submit|date:"Y-m-d H:i:s" }}</td>
-                                    </tr>
-                                    <tr id="desc{{ forloop.counter }}" style="display: none;">
-                                        <td colspan="4">{{ question.q1 }} {{ question.q2 }} {{ question.q3 }} {{ question.q4 }} {{ question.a }} {{ question.b }} {{ question.c }} {{ question.d }} {{ question.e }} {{ question.f }} {{ question.g }} {{ question.h }} {{ question.i }} {{ question.j }} {{ question.q6 }} {{ question.q7 }} {{ question.q8 }} {{ question.q9 }}  </td>
-                                    </tr>
-                                {% endfor %}
-                                </tbody>
-                            </table>
+                            <div class="input-group col-md-6">
+                                <span class="input-group-addon">住址</span>
+                                <select class="form-control" name="home">
+                                    <option {% ifequal person.home "农村" %} selected="selected" {% endifequal %}>农村
+                                    </option>
+                                    <option {% ifequal person.home "城镇" %} selected="selected" {% endifequal %}>城镇
+                                    </option>
+                                    <option {% ifequal person.home "城市" %} selected="selected" {% endifequal %}>城市
+                                    </option>
+                                </select>
+                            </div>
+                            <div class="input-group col-md-6 ">
+                                <div class="input-group-addon">职业</div>
+                                <input type="text" class="form-control" id="name" name="profession"
+                                       value="{{ person.profession }}" required>
+                            </div>
+                            <div class="input-group col-md-6 ">
+                                <div class="input-group-addon">文化程度</div>
+                                <input type="text" class="form-control" id="name" name="education"
+                                       value="{{ person.education }}" required>
+                            </div>
+                            <div class="input-group col-md-6 ">
+                                <div class="input-group-addon">既往病史</div>
+                                <input type="text" class="form-control" id="name" name="disease_history"
+                                       value="{{ person.disease_history }}" required>
+                            </div>
+                            <div class="input-group col-md-6 ">
+                                <div class="input-group-addon">既往病史病龄</div>
+                                <input type="text" class="form-control" id="name" name="disease_age_h"
+                                       value="{{ person.disease_age_h }}" required>
+                            </div>
+                            <div class="input-group col-md-6 ">
+                                <div class="input-group-addon">现病史</div>
+                                <input type="text" class="form-control" id="name" name="disease_current"
+                                       value="{{ person.disease_current }}" required>
+                            </div>
+                            <div class="input-group col-md-6 ">
+                                <div class="input-group-addon">现病史病龄</div>
+                                <input type="text" class="form-control" id="name" name="disease_age_c"
+                                       value="{{ person.disease_age_c }}" required>
+                            </div>
+                            <div class="input-group col-md-6 ">
+                                <div class="input-group-addon">既往用药</div>
+                                <input type="text" class="form-control" id="name" name="used_drugs"
+                                       value="{{ person.used_drugs }}" required>
+                            </div>
+                            <div class="input-group col-md-6 ">
+                                <div class="input-group-addon">现用药物</div>
+                                <input type="text" class="form-control" id="name" name="using_drugs"
+                                       value="{{ person.using_drugs }}" required>
+                            </div>
                         </div>
-                        <nav>
-                            <ul class="pagination">
-                                <li>
-                                    <a href="#" aria-label="Previous">
-                                        <span aria-hidden="true">&laquo;</span>
-                                    </a>
-                                </li>
-                                <li><a href="#">1</a></li>
-                                <li><a href="#">2</a></li>
-                                <li><a href="#">3</a></li>
-                                <li><a href="#">4</a></li>
-                                <li><a href="#">5</a></li>
-                                <li>
-                                    <a href="#" aria-label="Next">
-                                        <span aria-hidden="true">&raquo;</span>
-                                    </a>
-                                </li>
-                            </ul>
-                        </nav>
                     </div>
-                </div>
-            {% else %}
-                <div class="alert alert-danger" role="alert"><img width="50" height="50" src="/static/img/bad.png">未查询到记录!
-                </div>
-            {% endif %}
-        {% endif %}
+                        <button type="submit" class="btn btn-primary">更新</button>
+                        <a href="/" class="btn btn-primary">返回 </a>
+                </form>
+            {% endifequal %}
+        {% endifequal %}
+
+        {% ifequal result 2 %}
+            {% ifequal method "delete" %}
+                成功删除{{ username }}
+                        <a href="/" class="btn btn-primary">返回 </a>
+            {% endifequal %}
+
+            {% ifequal method "update" %}
+                成功更新{{ username }}
+                        <a href="." class="btn btn-primary">返回 </a>
+            {% endifequal %}
+        {% endifequal %}
+
+        {% ifequal result -1 %}
+            无权限操作{{ username }}
+                        <a href="/" class="btn btn-primary">返回 </a>
+        {% endifequal %}
 
     </div> <!-- /container -->
 

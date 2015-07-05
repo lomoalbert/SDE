@@ -225,14 +225,31 @@ def importperson(request):
     return render_to_response('importperson.html', locals())
 
 @login_required
-def doperson(request,username=None):
+def doperson(request,username,method):
+    person=Person.objects.get(username=username)
     if request.user.is_superuser:
-        if request.method=="POST" and request.POST.get('do',None)=='delete':#执行删除
-            person=Person.objects.get(username=username)
-        else:显示确定界面
-
-    else:
-        return
+        if request.method=="GET":
+            result=1
+        elif request.method=="POST":
+            result=2
+            if method=='delete':#删除确认
+                person.delete()
+            elif method=='update':#更新表单
+                #update
+                personinfo_name = ['name', 'sex', 'age', 'adno','home','profession', 'education', 'disease_history', 'disease_age_h',
+                       'disease_current','disease_age_c', 'used_drugs', 'using_drugs']
+                try:
+                    person = Person.objects.get(username=username)
+                except Person.DoesNotExist:
+                    person = Person(username=username)
+                for key in personinfo_name:
+                    setattr(person,key,request.POST.get(key,''))
+                person.save()
+        else:#显示查看界面
+            result=0
+    else:#无权操作
+        result=-1
+    return render_to_response('person.html', locals())
 
 
 @login_required
