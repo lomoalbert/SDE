@@ -19,7 +19,10 @@
     <div class="container">
         {% if persons %}
             <div class="panel panel-default">
-                <div class="panel-heading">调查用户清单</div>
+                <div class="panel-heading">调查用户清单
+                <a class="pull-right btn btn-sm btn-default" href="/importperson/">导入</a>
+                </div>
+
                 <div class="panel-body">
                     <div class="row alert alert-success" role="alert">
                         <form class="form-horizontal" method="POST" action=".">
@@ -63,10 +66,9 @@
                                     <td><a href="/manage/{{ person.username }}/"> {{ person.name }} </a></td>
                                     <td>{{ person.sex }}</td>
                                     <td>{{ person.age }}</td>
-                                    <td><a href="/manage/{{ person.username }}/"><button class="btn btn-primary">问卷记录</button></a>
-                                    <a href="/person/{{ person.username }}/info/"><button class="btn btn-primary">个人信息</button></a>
-                                    <a href="/person/{{ person.username }}/update/"><button class="btn btn-primary">更新</button></a>
-                                    <a href="/person/{{ person.username }}/delete/"><button class="btn btn-primary">删除</button></a></td>
+                                    <td><a href="/manage/{{ person.username }}/"><button class="btn btn-sm btn-primary">问卷记录</button></a>
+                                    <a href="/person/{{ person.username }}/update/"><button class="btn btn-sm btn-primary">信息更新</button></a>
+                                    <a href="/person/{{ person.username }}/delete/"><button class="btn btn-sm btn-primary">删除</button></a></td>
                                 </tr>
                             {% endfor %}
                             </tbody>
@@ -129,7 +131,7 @@
                     </div>
                 </div>
                 <div class="panel panel-default">
-                    <div class="panel-heading">用户{{ person.name }}的问卷清单<a class="pull-right" href="./download/">下载表格</a>
+                    <div class="panel-heading">用户{{ person.name }}的问卷清单<a class="pull-right btn btn-sm btn-default" href="./download/">下载表格</a>
                     </div>
                     <div class="panel-body">
                         <div class="form-group">

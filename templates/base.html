@@ -58,7 +58,6 @@
                 <ul class="nav navbar-nav navbar-right">
                     <!-- <li class="active"><a href="/">Home</a></li> -->
                     <li><a href="/questionnaire/">问卷</a></li>
-                    <li><a href="/importperson">导入</a></li>
                     <li><a href="/manage">管理</a></li>
                     {% if request.user.is_authenticated %}
                         <li><a href="/manage/{{ request.user.username }}/">{{ request.user.username }}</a></li>
