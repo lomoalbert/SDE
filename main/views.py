@@ -281,7 +281,7 @@ def manage(request, username=None,method=None):
             if method=='download':#下载某人的数据
                 person = Person.objects.get(username=username)
                 questions = Question.objects.filter(person=person)
-                content=''
+                content='username\tquestion1\tquestion2\tquestion3\tquestion4\tquestion5_a\tquestion5_b\tquestion5_c\tquestion5_d\tquestion5_e\tquestion5_f\tquestion5_g\tquestion5_h\tquestion5_i\tquestion5_j\tquestion6\tquestion7\tquestion8\tquestion9\tscore\tdate\n'
                 for i in questions:
                     line=[str(getattr(i,attr)) for attr in ['q1','q2','q3','q4','a','b','c','d','e','f','g','h','i','j','q6','q7','q8','q9','score','time_submit']]
                     content+=username+'\t'+'\t'.join(line)+'\n'

@@ -20,7 +20,7 @@
         {% if persons %}
             <div class="panel panel-default">
                 <div class="panel-heading">调查用户清单
-                <a class="pull-right btn btn-sm btn-default" href="/importperson/">导入</a>
+                    <a class="pull-right btn btn-sm btn-default" href="/importperson/">导入</a>
                 </div>
 
                 <div class="panel-body">
@@ -53,6 +53,7 @@
                             <thead>
                             <tr>
                                 <th>住院号</th>
+                                <th>用户</th>
                                 <th>姓名</th>
                                 <th>性别</th>
                                 <th>年龄</th>
@@ -63,12 +64,19 @@
                             {% for person in persons %}
                                 <tr>
                                     <th scope="row">{{ person.adno }}</th>
-                                    <td><a href="/manage/{{ person.username }}/"> {{ person.name }} </a></td>
+                                    <td>{{ person.username }}</td>
+                                    <td>{{ person.name }}</td>
                                     <td>{{ person.sex }}</td>
                                     <td>{{ person.age }}</td>
-                                    <td><a href="/manage/{{ person.username }}/"><button class="btn btn-sm btn-primary">问卷记录</button></a>
-                                    <a href="/person/{{ person.username }}/update/"><button class="btn btn-sm btn-primary">信息更新</button></a>
-                                    <a href="/person/{{ person.username }}/delete/"><button class="btn btn-sm btn-primary">删除</button></a></td>
+                                    <td><a href="/manage/{{ person.username }}/">
+                                        <button class="btn btn-sm btn-primary">问卷记录</button>
+                                    </a>
+                                        <a href="/person/{{ person.username }}/update/">
+                                            <button class="btn btn-sm btn-primary">信息更新</button>
+                                        </a>
+                                        <a href="/person/{{ person.username }}/delete/">
+                                            <button class="btn btn-sm btn-primary">删除</button>
+                                        </a></td>
                                 </tr>
                             {% endfor %}
                             </tbody>
@@ -131,7 +139,8 @@
                     </div>
                 </div>
                 <div class="panel panel-default">
-                    <div class="panel-heading">用户{{ person.name }}的问卷清单<a class="pull-right btn btn-sm btn-default" href="./download/">下载表格</a>
+                    <div class="panel-heading">用户{{ person.name }}的问卷清单<a class="pull-right btn btn-sm btn-default"
+                                                                          href="./download/">下载表格</a>
                     </div>
                     <div class="panel-body">
                         <div class="form-group">
@@ -153,7 +162,31 @@
                                         <td>{{ question.time_submit|date:"Y-m-d H:i:s" }}</td>
                                     </tr>
                                     <tr id="desc{{ forloop.counter }}" style="display: none;">
-                                        <td colspan="4">{{ question.q1 }} {{ question.q2 }} {{ question.q3 }} {{ question.q4 }} {{ question.a }} {{ question.b }} {{ question.c }} {{ question.d }} {{ question.e }} {{ question.f }} {{ question.g }} {{ question.h }} {{ question.i }} {{ question.j }} {{ question.q6 }} {{ question.q7 }} {{ question.q8 }} {{ question.q9 }}  </td>
+                                        <td colspan="4">
+                                            <div class="panel panel-default text-left">
+                                                <div class="panel-heading">PSQI 总分 = {{ question.score }}</div>
+                                                <div class="panel-body row">
+                                                    <label class="col-md-2 control-label">睡觉时间: {{ question.q1 }}点</label>
+                                                    <label class="col-md-2 control-label">入睡时间: {{ question.q2 }}分钟</label>
+                                                    <label class="col-md-2 control-label">起床时间: {{ question.q3 }}点</label>
+                                                    <label class="col-md-2 control-label">睡眠时长: {{ question.q4 }}小时</label>
+                                                    <label class="col-md-2 control-label">入睡困难: {{ question.a }}次/周</label>
+                                                    <label class="col-md-2 control-label">易醒早醒: {{ question.b }}次/周</label>
+                                                    <label class="col-md-2 control-label">夜间如厕: {{ question.c }}次/周</label>
+                                                    <label class="col-md-2 control-label">呼吸不畅: {{ question.d }}次/周</label>
+                                                    <label class="col-md-2 control-label">咳嗽打鼾: {{ question.e }}次/周</label>
+                                                    <label class="col-md-2 control-label">感觉寒冷: {{ question.f }}次/周</label>
+                                                    <label class="col-md-2 control-label">感觉闷热: {{ question.g }}次/周</label>
+                                                    <label class="col-md-2 control-label">做噩梦: {{ question.h }}次/周</label>
+                                                    <label class="col-md-2 control-label">疼痛不适: {{ question.i }}次/周</label>
+                                                    <label class="col-md-2 control-label">其他烦恼: {{ question.j }}次/周</label>
+                                                    <label class="col-md-2 control-label">睡眠质量: {{ question.q6 }}分</label>
+                                                    <label class="col-md-2 control-label">药物催眠: {{ question.q7 }}次/周</label>
+                                                    <label class="col-md-2 control-label">感到困倦: {{ question.q8 }}次/周</label>
+                                                    <label class="col-md-2 control-label">精力不足: {{ question.q9 }}分</label>
+                                                </div>
+                                            </div>
+                                        </td>
                                     </tr>
                                 {% endfor %}
                                 </tbody>

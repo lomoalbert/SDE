@@ -10,10 +10,14 @@
 
         {% ifequal result 1 %}
             {% ifequal method "delete" %}
-                确定要删除{{ person.name }}?
+                <div class="row alert alert-danger" role="alert">
+                    确定要删除{{ person.name }}?
+                </div>
                 <form action="." method="post">
-                    <button type="submit" class="btn btn-primary btn-block">确定</button>
+                    <button type="submit" class="btn btn-primary">确定</button>
+                    <a href="/manage/" class="btn btn-primary">返回</a>
                 </form>
+
             {% endifequal %}
 
             {% ifequal method "update" %}
@@ -98,27 +102,34 @@
                             </div>
                         </div>
                     </div>
-                        <button type="submit" class="btn btn-primary">更新</button>
-                        <a href="/" class="btn btn-primary">返回 </a>
+                    <button type="submit" class="btn btn-primary">更新</button>
+                    <a href="/manage/" class="btn btn-primary">返回 </a>
                 </form>
             {% endifequal %}
         {% endifequal %}
 
         {% ifequal result 2 %}
             {% ifequal method "delete" %}
-                成功删除{{ username }}
-                        <a href="/" class="btn btn-primary">返回 </a>
+
+                <div class="row alert alert-success" role="alert">
+                    成功删除{{ username }}!
+                </div>
+                <a href="/manage/" class="btn btn-primary">返回 </a>
             {% endifequal %}
 
             {% ifequal method "update" %}
-                成功更新{{ username }}
-                        <a href="." class="btn btn-primary">返回 </a>
+                <div class="row alert alert-success" role="alert">
+                    成功更新{{ username }}!
+                </div>
+                <a href="/manage/" class="btn btn-primary">返回 </a>
             {% endifequal %}
         {% endifequal %}
 
         {% ifequal result -1 %}
-            无权限操作{{ username }}
-                        <a href="/" class="btn btn-primary">返回 </a>
+            <div class="row alert alert-warning" role="alert">
+            无权限操作{{ username }}!
+            </div>
+            <a href="/manage/" class="btn btn-primary">返回 </a>
         {% endifequal %}
 
     </div> <!-- /container -->
