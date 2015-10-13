@@ -2,17 +2,35 @@
 {% block title %}睡眠质量调查{% endblock %}
 
 {% block content %}
-<div class="container">
+    <div class="container">
 
-      <!-- Main component for a primary marketing message or call to action -->
-      <div class="jumbotron">
-        <h1>睡眠质量调查</h1>
-        <p>This example is a quick exercise to illustrate how the default, static and fixed to top navbar work. It includes the responsive CSS and HTML, so it also adapts to your viewport and device.</p>
-        <p>To see the difference between static and fixed top navbars, just scroll.</p>
-        <p>
-          <a class="btn btn-lg btn-primary" href="/questionnaire" role="button">开启问卷</a>
-        </p>
-      </div>
+        <!-- Main component for a primary marketing message or call to action -->
+        <div class="jumbotron">
+            <h1>睡眠质量调查</h1>
+
+            <h5>
+                <p>该调查问卷适用于睡眠障碍患者、精神障碍患者评价睡眠质量，同时也适用于一般人睡眠质量的评估。问卷反映了您近一个月的睡眠状况，其由19个项目构成，可分为睡眠质量、入睡时间、睡眠时间、睡眠效率、睡眠障碍、催眠药物应用及日间功能7个成分。每个成分按0~3计分，累计各成分得分即为睡眠质量总分，总分越高，失眠越严重，总分≥7分者判定为睡眠质量不良。该调查问卷需要填写您的个人信息（住院号、姓名、性别、年龄、住址、职业、文化程度、生活习惯）和病史信息（既往病史病龄、当前病史病龄、既往用药、当前用药等）。您的所有信息将会被严格保密。</p>
+            </h5>
+            <br />
+            <div class="checkbox">
+                <label>
+                    <input id="agree" type="checkbox"  onclick="agree();">我已经认真阅读以上信息，并自愿填写本调查问卷。
+                </label>
+            </div>
+            <script language="JavaScript">
+                function agree(){
+                    console.log($("#agree").attr("checked"));
+                    if ($("#agree").is(":checked")==true){
+                        $("#button").removeAttr("disabled");
+                    }else{
+                        $("#button").attr("disabled","disabled");
+                    }
+                }
+            </script>
+            <p>
+                <a disabled="disabled" id="button" class="btn btn-lg btn-primary" href="/questionnaire" role="button">开启问卷</a>
+            </p>
+        </div>
 
     </div>
 {% endblock %}
