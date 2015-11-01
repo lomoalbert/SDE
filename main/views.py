@@ -86,7 +86,7 @@ def questionnaire(request):
             element_B = newquestion.a
         elif newquestion.q2 <= 30:
             element_B = 1 + newquestion.a
-        elif newquestion.q2 < 60:
+        elif newquestion.q2 <= 60:
             element_B = 2 + newquestion.a
         elif newquestion.q2 > 60:
             element_B = 3 + newquestion.a

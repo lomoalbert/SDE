@@ -6,21 +6,22 @@
         <div class="row">
             <form class="form-signin" action="{{ app_path }}" method="post" id="login-form">
                 {% csrf_token %}
-                <h2 class="form-signin-heading">Please sign in</h2>
-                <label for="inputEmail" class="sr-only">User Name</label>
-                <input type="text" id="inputEmail" class="form-control" placeholder="User Name" maxlength="254"
+                <h2 class="form-signin-heading">登录</h2>
+                <label for="inputEmail" class="sr-only">用户名</label>
+                <input type="text" id="inputEmail" class="form-control" placeholder="用户名" maxlength="254"
                        name="username" required="" autofocus="">
-                <label for="inputPassword" class="sr-only">Password</label>
-                <input type="password" id="inputPassword" class="form-control" placeholder="Password"
+                <label for="inputPassword" class="sr-only">密码</label>
+                <input type="password" id="inputPassword" class="form-control" placeholder="密码"
                        name="password" required="">
                 <input type="hidden" name="next" value="{{ next }}"/>
 
-                <div class="checkbox">
+                <div class="checkbox" style="float:left;">
                     <label>
-                        <input type="checkbox" value="remember-me"> Remember me
+                        <input type="checkbox" value="remember-me"> 记住我
                     </label>
                 </div>
-                <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+                <div style="float:right;margin: 10px 0px 10px;"><a href="/register">注册帐号</a></div>
+                <button class="btn btn-lg btn-primary btn-block" type="submit">登录</button>
             </form>
         </div>
     </div> <!-- /container -->

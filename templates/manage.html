@@ -93,9 +93,11 @@
 
             {% if questions %}
                 <div class="panel panel-default">
-                    <div class="panel-heading">用户{{ person.name }}的图表</div>
+                    <div class="panel-heading">用户 {{ person.name }} 的图表</div>
                     <div>
+                    <label>PSQI得分</label>
                         <canvas id="myChart"></canvas>
+                    <label style="text-align: center;width: 100%;">次数</label>
                         <script>
                             var randomScalingFactor = function () {
                                 return Math.round(Math.random() * 100)
